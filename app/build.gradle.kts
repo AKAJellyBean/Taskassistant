@@ -6,11 +6,14 @@ plugins {
 
 }
 
+val googleApiKey = project.findProperty("GOOGLE_API_KEY") ?: ""
+
 android {
     namespace = "com.example.taskassistant"
     compileSdk = 35
 
     defaultConfig {
+
         applicationId = "com.example.taskassistant"
         minSdk = 24
         targetSdk = 35
@@ -19,7 +22,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("string", "GOOGLE_API_KEY", "\$googleApiKey")
+        buildConfigField("String", "GOOGLE_API_KEY", "\"$googleApiKey\"")
     }
 
     buildTypes {
@@ -39,6 +42,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 
