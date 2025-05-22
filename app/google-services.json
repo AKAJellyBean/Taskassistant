@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "175143179573",
+    "project_id": "studenttaskassistant",
+    "storage_bucket": "studenttaskassistant.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175143179573:android:3b853a2f812c8a9223687c",
+        "android_client_info": {
+          "package_name": "com.example.taskassistant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKl8ga8wm2ym8NatTiLUr7JycqyJDbTYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
