@@ -18,6 +18,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("string", "GOOGLE_API_KEY", "\$googleApiKey")
     }
 
     buildTypes {
