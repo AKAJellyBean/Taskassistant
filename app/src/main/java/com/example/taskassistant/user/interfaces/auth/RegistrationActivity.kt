@@ -96,7 +96,9 @@ fun RegistrationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                TextButton(onClick = { /* TODO: Navigate to Login */ }) {
+                TextButton(onClick = {
+                    navController.navigate("login")
+                }) {
                     Text("Already have an account? Log in")
                 }
                 Button(

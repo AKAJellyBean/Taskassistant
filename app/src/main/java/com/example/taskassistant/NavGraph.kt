@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskassistant.user.interfaces.auth.CreateCredentialsScreen
+import com.example.taskassistant.user.interfaces.auth.LoginScreen
 import com.example.taskassistant.user.interfaces.auth.RegistrationScreen
 import com.example.taskassistant.user.interfaces.home.GetStartedScreen
 
@@ -14,8 +15,9 @@ import com.example.taskassistant.user.interfaces.home.GetStartedScreen
 fun AppNavHost(navController: NavHostController = rememberNavController()) {
     NavHost(
         navController = navController,
-        startDestination = "registration"
+        startDestination = "login"
     ) {
+
         composable("registration") {
             RegistrationScreen(navController = navController)
         }
@@ -28,6 +30,10 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
 
         composable("getStartedScreen") {
             GetStartedScreen(navController = navController)
+        }
+
+        composable("login") {
+            LoginScreen(navController = navController)
         }
     }
 }
