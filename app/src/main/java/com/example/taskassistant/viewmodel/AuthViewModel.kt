@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.taskassistant.user.interfaces.auth.DatePickerModal
 import com.example.taskassistant.utils.hashPassword
+import com.example.taskassistant.utils.verifyPassword
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.text.SimpleDateFormat
@@ -45,6 +46,10 @@ class AuthViewModel: ViewModel() {
     val selectedDate: StateFlow<Long?> = _selectedDate
 
     private val firestore = FirebaseFirestore.getInstance()
+    private val db = Firebase.firestore
+
+    private val _actualUsername: String? = null
+    private val _actualPassword: String? = null
 
 
     private fun convertToFirestoreTimestamp(dateString: String): Timestamp? {
@@ -120,6 +125,42 @@ class AuthViewModel: ViewModel() {
             .set(loginMap)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it) }
+    }
+
+    // Login User
+    fun userLogin(
+        onSuccess: (userId: String) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+
+        val enteredUsername = username
+        val enteredPassword = password
+
+
+        db.collection("logins")
+            .whereEqualTo("username", enteredUsername)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val document = querySnapshot.documents.first()
+                    val actualPassword = document.getString("password") ?: ""
+
+                    if (verifyPassword(enteredPassword, actualPassword)) {
+                        val userId = document.getString("userId") ?: ""
+                        onSuccess(userId)
+                    } else {
+
+
+                        onFailure(Exception("Invalid Username or Password"))
+                    }
+
+                } else {
+                    onFailure(Exception("Invalid Username or Password"))
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
     }
 
     // Track User Login

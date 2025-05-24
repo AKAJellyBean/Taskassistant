@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    // Kotlin serialization plugin for type safe routes and navigation arguments
+    kotlin("plugin.serialization") version "2.0.21"
 
 }
 
@@ -52,6 +54,10 @@ android {
 }
 
 dependencies {
+    val nav_version = "2.9.0"
+
+    // Jetpack Compose integration
+    implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.compose.ui:ui:1.6.1")
     implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.1")
@@ -60,7 +66,6 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.compose.ui:ui:1.5.4")
     implementation ("com.google.firebase:firebase-firestore-ktx:24.4.3")
-    implementation ("androidx.navigation:navigation-compose:2.7.0")
 
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-analytics")
