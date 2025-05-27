@@ -48,10 +48,6 @@ class AuthViewModel: ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
     private val db = Firebase.firestore
 
-    private val _actualUsername: String? = null
-    private val _actualPassword: String? = null
-
-
     private fun convertToFirestoreTimestamp(dateString: String): Timestamp? {
         return try {
             val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.US)
