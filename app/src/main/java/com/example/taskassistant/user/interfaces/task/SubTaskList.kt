@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -232,7 +231,7 @@ fun SubTaskCard(
 
 
 
-@Preview()
+@Preview
 @Composable
 fun PreviewTaskList() {
     SubTaskListScreen(taskGroupId = "", navController = rememberNavController())

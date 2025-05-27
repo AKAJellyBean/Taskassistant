@@ -1,8 +1,6 @@
 package com.example.taskassistant.user.interfaces.task
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,7 +28,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.taskassistant.user.interfaces.auth.DatePickerModal
-import com.example.taskassistant.viewmodel.AuthViewModel
 import com.example.taskassistant.viewmodel.TaskGroupViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -89,35 +85,6 @@ fun CreateTaskGroupScreen(
 
     }
 
-}
-@Composable
-fun DatePicker(viewModel: TaskGroupViewModel = viewModel()) {
-    val selectedDate by viewModel.selectedDate.collectAsState()
-    var showDialog by remember { mutableStateOf(false) }
-
-    val formattedDate = selectedDate?.let {
-        val date = Date(it)
-        SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(date)
-    } ?: "No Date Selected"
-
-    Column {
-        Text(text = "Selected Date, $formattedDate")
-        Button(onClick = {showDialog = true}) {
-            Text("Pick a Date")
-        }
-
-        if (showDialog) {
-            DatePickerModal(
-                onDateSelected = { millis ->
-                    viewModel.updateSelectedDate(millis)
-                    viewModel.dueDate = millis?.let {
-                        SimpleDateFormat("MM/dd/yyyy", Locale.US).format(Date(it))
-                    } ?: ""
-                },
-                onDismiss = { showDialog = false }
-            )
-        }
-    }
 }
 
 @Composable

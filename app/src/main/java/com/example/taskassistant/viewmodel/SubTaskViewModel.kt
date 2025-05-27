@@ -1,6 +1,5 @@
 package com.example.taskassistant.viewmodel
 
-import androidx.compose.foundation.MutatePriority
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +16,6 @@ import java.util.UUID
 class SubTaskViewModel: ViewModel() {
     var title by mutableStateOf("")
     var dueDate by mutableStateOf("")
-    var priority by mutableStateOf("")
     private val _selectedDate = MutableStateFlow<Long?>(null)
     val selectedDate: StateFlow<Long?> = _selectedDate
 
