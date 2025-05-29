@@ -11,8 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.taskassistant.ui.theme.AppTheme
 import com.example.taskassistant.user.interfaces.auth.RegistrationScreen
-import com.example.taskassistant.ui.theme.TaskassistantTheme
 import com.google.firebase.FirebaseApp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
         setContent {
-            TaskassistantTheme {
+            AppTheme {
                 AppNavHost()
             }
         }

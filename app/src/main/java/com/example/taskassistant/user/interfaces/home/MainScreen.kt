@@ -8,27 +8,56 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.taskassistant.AppTopBar
 import com.example.taskassistant.BottomNavigationBar
+import com.example.taskassistant.ui.theme.AppTheme
+import com.example.taskassistant.ui.theme.bodyFontFamily
 import com.example.taskassistant.user.interfaces.task.TaskListScreen
 import com.example.taskassistant.utils.BottomNavItem
+import com.example.taskassistant.utils.PlansScreen
+import com.example.taskassistant.utils.PomodoroScreen
+import com.example.taskassistant.utils.ProfileScreen
 
 @Composable
 fun MainScreen(userId: String, navController: NavHostController) {
     val bottomNavController = rememberNavController() // used just for bottom nav switching
 
-    Scaffold(
-        bottomBar = { BottomNavigationBar(bottomNavController) }
-    ) { innerPadding ->
-        NavHost(
-            navController = bottomNavController,
-            startDestination = BottomNavItem.Task.routes,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(BottomNavItem.Task.routes) {
+    AppTheme {
+        Scaffold(
+            topBar = {
+                AppTopBar(
+                    title = "Mindly",
+                    showBackButton = false,
+                    navController = navController,
 
-                TaskListScreen(userId = userId, navController = navController)
+                    )
+            },
+            bottomBar = { BottomNavigationBar(bottomNavController) }
+        ) { innerPadding ->
+            NavHost(
+                navController = bottomNavController,
+                startDestination = BottomNavItem.Task.routes,
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                composable(BottomNavItem.Task.routes) {
+
+                    TaskListScreen(userId = userId, navController = navController)
+                }
+
+                composable(BottomNavItem.Plan.routes) {
+                    PlansScreen()
+                }
+
+                composable(BottomNavItem.Pomodoro.routes) {
+                    PomodoroScreen()
+                }
+
+                composable(BottomNavItem.Profile.routes){
+                    ProfileScreen()
+                }
             }
         }
     }
+
 }
 

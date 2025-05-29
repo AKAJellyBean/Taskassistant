@@ -14,8 +14,14 @@ import com.example.taskassistant.user.interfaces.home.MainScreen
 import com.example.taskassistant.user.interfaces.task.CreateSubTaskScreen
 import com.example.taskassistant.user.interfaces.task.CreateTaskGroupScreen
 import com.example.taskassistant.user.interfaces.task.SubTaskListScreen
+import com.example.taskassistant.user.interfaces.task.TaskListScreen
 import com.example.taskassistant.user.interfaces.task.UpdateSubTaskScreen
 import com.example.taskassistant.user.interfaces.task.UpdateTaskGroupScreen
+import com.example.taskassistant.utils.BottomNavItem
+import com.example.taskassistant.utils.PlansScreen
+import com.example.taskassistant.utils.PomodoroScreen
+import com.example.taskassistant.utils.ProfileScreen
+import com.example.taskassistant.utils.TasksScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController = rememberNavController()) {
@@ -76,6 +82,5 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             val taskGroupId = backStackEntry.arguments?.getString("taskGroupId") ?: ""
             UpdateTaskGroupScreen(taskGroupId = taskGroupId, navController = navController)
         }
-
     }
 }
