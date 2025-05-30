@@ -10,6 +10,7 @@ import com.example.taskassistant.user.interfaces.auth.CreateCredentialsScreen
 import com.example.taskassistant.user.interfaces.auth.LoginScreen
 import com.example.taskassistant.user.interfaces.auth.RegistrationScreen
 import com.example.taskassistant.user.interfaces.group.CreateGroupTaskScreen
+import com.example.taskassistant.user.interfaces.group.CreateNewGroupScreen
 import com.example.taskassistant.user.interfaces.group.GroupMainScreen
 import com.example.taskassistant.user.interfaces.group.GroupTaskListScreen
 import com.example.taskassistant.user.interfaces.home.GetStartedScreen
@@ -90,6 +91,11 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             val groupId = backStackEntry.arguments?.getString("groupId") ?: ""
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             GroupMainScreen(groupId = groupId, navController = navController, userId = userId)
+        }
+
+        composable("createGroup/{userId}") { backstackEntry ->
+            val userId = backstackEntry.arguments?.getString("userId") ?: ""
+            CreateNewGroupScreen(userId = userId, navController = navController)
         }
 
         composable("groupTaskList{groupId}") { backStackEntry ->

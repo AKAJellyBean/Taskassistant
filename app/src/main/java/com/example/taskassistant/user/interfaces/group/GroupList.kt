@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -41,50 +42,64 @@ fun GroupListScreen(
         onBackPressed?.invoke() ?: navController.popBackStack()
     }
 
-    // No Scaffold topBar here, only content
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
-    ) {
-        when {
-            isLoading -> {
-                Spacer(modifier = Modifier.height(20.dp))
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-            }
-            errorMessage != null -> {
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    text = "Error: $errorMessage",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
-            groups.isEmpty() -> {
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    text = "No groups found.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
-            else -> {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(groups) { group ->
-                        GroupCard(
-                            group = group,
-                            onClick = { navController.navigate("groupMain/${group.groupId}") }
-                        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            when {
+                isLoading -> {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                }
+                errorMessage != null -> {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "Error: $errorMessage",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+                groups.isEmpty() -> {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "No groups found.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+                else -> {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(groups) { group ->
+                            GroupCard(
+                                group = group,
+                                onClick = { navController.navigate("groupMain/${group.groupId}") }
+                            )
+                        }
                     }
                 }
             }
         }
+
+        // Floating Add Group Button
+        FloatingActionButton(
+            onClick = { navController.navigate("createGroup/$userId") },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        ) {
+            Icon(imageVector = Icons.Default.Add, contentDescription = "Add Group")
+        }
     }
 }
+
 
 @Composable
 fun GroupCard(group: Group, onClick: () -> Unit) {
