@@ -19,8 +19,7 @@ import com.example.taskassistant.utils.BottomNavItem
 fun BottomNavigationBar(navController: NavHostController) {
     val items = listOf(
         BottomNavItem.Task,
-        BottomNavItem.Plan,
-        BottomNavItem.Pomodoro,
+        BottomNavItem.Group,
         BottomNavItem.Profile
     )
 

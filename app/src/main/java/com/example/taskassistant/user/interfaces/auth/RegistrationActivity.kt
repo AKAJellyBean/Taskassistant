@@ -1,30 +1,26 @@
 package com.example.taskassistant.user.interfaces.auth
 
-import android.app.DatePickerDialog
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.taskassistant.viewmodel.AuthViewModel
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,9 +34,9 @@ fun RegistrationScreen(
 
     val firstName = viewModel.firstName
     val lastName = viewModel.lastName
-    val dateOfBirth = viewModel.dateOfBirth
     val email = viewModel.email
     val mobileNumber = viewModel.mobileNumber
+    var selectedDateMillis by remember { mutableStateOf<Long?>(null) }
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -82,7 +78,18 @@ fun RegistrationScreen(
                     ) {
                         StyledTextField(value = firstName, label = "First Name", onValueChange = { viewModel.firstName = it })
                         StyledTextField(value = lastName, label = "Last Name", onValueChange = { viewModel.lastName = it })
-                        DateOfBirthPicker(viewModel)
+
+                        DatePickerTextField(
+                            label = "Date of Birth",
+                            selectedDateMillis = selectedDateMillis,
+                            onDateSelected = { millis ->
+                                selectedDateMillis = millis
+                                viewModel.dateOfBirth = millis?.let {
+                                    SimpleDateFormat("MM/dd/yyyy", Locale.US).format(Date(it))
+                                } ?: ""
+                            }
+                        )
+
                         StyledTextField(value = email, label = "Email", keyboardType = KeyboardType.Email, onValueChange = { viewModel.email = it })
                         StyledTextField(value = mobileNumber, label = "Mobile Number", keyboardType = KeyboardType.Phone, onValueChange = { viewModel.mobileNumber = it })
                     }
@@ -112,7 +119,6 @@ fun RegistrationScreen(
                                 }
                             },
                             onFailure = { exception ->
-                                Log.e("Registration", "Error: ${exception.message}")
                                 Toast.makeText(context, "Registration failed: ${exception.message}", Toast.LENGTH_LONG).show()
                             }
                         )
@@ -151,12 +157,75 @@ fun StyledTextField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun DatePickerTextField(
+    label: String = "Date of Birth",
+    selectedDateMillis: Long? = null,
+    onDateSelected: (Long?) -> Unit
+) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    val formattedDate = selectedDateMillis?.let {
+        val date = Date(it)
+        SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(date)
+    } ?: ""
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showDialog = true }
+    ) {
+        OutlinedTextField(
+            value = formattedDate,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(label) },
+            placeholder = { Text("Select your birth date") },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = "Select Date"
+                )
+            },
+            enabled = false, // prevents keyboard and enforces read-only
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            shape = RoundedCornerShape(12.dp),
+        )
+    }
+
+    if (showDialog) {
+        val datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = selectedDateMillis
+        )
+        DatePickerDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDateSelected(datePickerState.selectedDateMillis)
+                        showDialog = false
+                    }
+                ) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) { Text("Cancel") }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun DatePickerModal(
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit,
+    initialDateMillis: Long? = null
 ) {
+    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = initialDateMillis)
 
-    val datePickerState = rememberDatePickerState()
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
@@ -177,32 +246,3 @@ fun DatePickerModal(
     }
 }
 
-@Composable
-fun DateOfBirthPicker(viewModel: AuthViewModel = viewModel()) {
-    val selectedDate by viewModel.selectedDate.collectAsState()
-    var showDialog by remember { mutableStateOf(false) }
-
-    val formattedDate = selectedDate?.let {
-        val date = Date(it)
-        SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(date)
-    } ?: "No Date Selected"
-
-    Column {
-        Text(text = "Selected Date, $formattedDate")
-        Button(onClick = {showDialog = true}) {
-            Text("Pick a Date")
-        }
-
-        if (showDialog) {
-            DatePickerModal(
-                onDateSelected = { millis ->
-                    viewModel.updateSelectedDate(millis)
-                    viewModel.dateOfBirth = millis?.let {
-                        SimpleDateFormat("MM/dd/yyyy", Locale.US).format(Date(it))
-                    } ?: ""
-                },
-                onDismiss = { showDialog = false }
-            )
-        }
-    }
-}
