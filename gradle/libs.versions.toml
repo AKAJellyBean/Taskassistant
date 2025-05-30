@@ -1,12 +1,20 @@
 [versions]
+accompanistCoil = "0.28.0"
 activityComposeVersion = "1.7.2"
 agp = "8.9.0"
+androidxActivityCompose = "1.8.0"
+androidxMaterial3 = "1.1.0"
 androidxUi = "1.8.2"
 androidxUiTextGoogleFonts = "<latest_version>"
 androidxUiTextGoogleFontsVersion = "1.6.7"
+coilCompose = "2.4.0"
+composeBomVersion = "2024.04.01"
+datastorePreferences = "1.1.7"
 desugar_jdk_libs = "2.1.5"
 firebaseBom = "33.14.0"
 firebaseFirestoreKtx = "25.1.4"
+firebaseMessaging = "24.1.1"
+foundation = "1.8.2"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -28,11 +36,17 @@ uiTextAndroid = "1.8.2"
 uiTextGoogleFontsVersion = "1.8.1"
 
 [libraries]
+accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version.ref = "accompanistCoil" }
 androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
+androidx-activity-compose-v180 = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
+androidx-compose-bom-v20240401 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
 androidx-compose-ui-ui2 = { module = "androidx.compose.ui:ui", version.ref = "androidxUi" }
 androidx-core = { module = "androidx.core:core", version.ref = "coreKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-material3-v110 = { module = "androidx.compose.material3:material3", version.ref = "androidxMaterial3" }
 androidx-material3-vlatestversion = { module = "androidx.compose.material3:material3", version.ref = "material3Version" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "runtime" }
@@ -40,10 +54,14 @@ androidx-ui-text-google-fonts-v167 = { module = "androidx.compose.ui:ui-text-goo
 androidx-ui-text-google-fonts-v181 = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFontsVersion" }
 androidx-ui-text-google-fonts-vlatestversion = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "androidxUiTextGoogleFonts" }
 androidx-ui-v161 = { module = "androidx.compose.ui:ui", version.ref = "ui" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebaseMessaging" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
+foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

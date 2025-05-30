@@ -12,11 +12,12 @@ import com.example.taskassistant.AppTopBar
 import com.example.taskassistant.BottomNavigationBar
 import com.example.taskassistant.ui.theme.AppTheme
 import com.example.taskassistant.ui.theme.bodyFontFamily
+import com.example.taskassistant.user.interfaces.group.CreateNewGroupScreen
+import com.example.taskassistant.user.interfaces.group.GroupListScreen
+import com.example.taskassistant.user.interfaces.profile.ProfileScreen
 import com.example.taskassistant.user.interfaces.task.TaskListScreen
 import com.example.taskassistant.utils.BottomNavItem
-import com.example.taskassistant.utils.PlansScreen
-import com.example.taskassistant.utils.PomodoroScreen
-import com.example.taskassistant.utils.ProfileScreen
+
 
 @Composable
 fun MainScreen(userId: String, navController: NavHostController) {
@@ -44,16 +45,12 @@ fun MainScreen(userId: String, navController: NavHostController) {
                     TaskListScreen(userId = userId, navController = navController)
                 }
 
-                composable(BottomNavItem.Plan.routes) {
-                    PlansScreen()
-                }
-
-                composable(BottomNavItem.Pomodoro.routes) {
-                    PomodoroScreen()
+                composable(BottomNavItem.Group.routes) {
+                    GroupListScreen(userId = userId, navController = navController)
                 }
 
                 composable(BottomNavItem.Profile.routes){
-                    ProfileScreen()
+                    ProfileScreen(userId = userId)
                 }
             }
         }

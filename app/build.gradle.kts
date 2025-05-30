@@ -57,13 +57,23 @@ android {
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+    implementation (libs.material3)
+    implementation (libs.coil.compose)  // Latest Coil Compose
+
+
 
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.ui.text.android)
-
+    implementation(libs.foundation)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.activity.compose.v180)
+    implementation (libs.firebase.messaging)
     implementation(libs.androidx.material3.vlatestversion)
     implementation(libs.androidx.ui.text.google.fonts.vlatestversion)
     implementation(libs.play.services.base)
+    implementation (libs.androidx.material3.v110)
+    implementation(platform(libs.androidx.compose.bom.v20240401))
+    implementation(libs.androidx.foundation)
 
     // Jetpack Compose integration
     implementation(libs.androidx.navigation.compose)
@@ -75,6 +85,7 @@ dependencies {
     implementation(libs.androidx.activity.compose.v172)
     implementation(libs.androidx.compose.ui.ui2)
     implementation (libs.firebase.firestore.ktx)
+    implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.androidx.compose.ui.ui2)
 

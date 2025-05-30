@@ -98,7 +98,7 @@ fun CreateCredentialsScreen(
                         userId = userId,
                         onSuccess = {
                             Toast.makeText(context, "Credentials Created", Toast.LENGTH_LONG).show()
-                            navController.navigate("getStartedScreen") {
+                            navController.navigate("taskList/$userId") {
                                 popUpTo("createCredentials") {inclusive = true}
                             }
 

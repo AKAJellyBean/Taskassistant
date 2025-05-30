@@ -1,38 +1,25 @@
 package com.example.taskassistant.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.taskassistant.data.User
+import com.example.taskassistant.utils.hashPassword
+import com.example.taskassistant.utils.verifyPassword
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.ktx.firestore
-import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.taskassistant.user.interfaces.auth.DatePickerModal
-import com.example.taskassistant.utils.hashPassword
-import com.example.taskassistant.utils.verifyPassword
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
-class AuthViewModel: ViewModel() {
+class AuthViewModel : ViewModel() {
     var firstName by mutableStateOf("")
     var lastName by mutableStateOf("")
     var dateOfBirth by mutableStateOf("")
@@ -73,11 +60,33 @@ class AuthViewModel: ViewModel() {
         )
     }
 
-    // Registering New User
+    fun validateInputs(): String? {
+        val mobileRegex = Regex("^07[01245678][0-9]{7}$") // Sri Lankan format
+        val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
+
+        return when {
+            firstName.isBlank() -> "First name is required"
+            lastName.isBlank() -> "Last name is required"
+            dateOfBirth.isBlank() -> "Date of birth is required"
+            !email.matches(emailRegex) -> "Invalid email format"
+            !mobileNumber.matches(mobileRegex) -> "Invalid Sri Lankan mobile number"
+            username.length < 4 -> "Username must be at least 4 characters"
+            password.length < 6 -> "Password must be at least 6 characters"
+            password != confirmPassword -> "Passwords do not match"
+            else -> null
+        }
+    }
+
     fun registerUser(
         onSuccess: (userId: String) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
+        val validationError = validateInputs()
+        if (validationError != null) {
+            onFailure(Exception(validationError))
+            return
+        }
+
         val userId = UUID.randomUUID().toString()
         val userMap = mapOf(
             "userId" to userId,
@@ -85,9 +94,7 @@ class AuthViewModel: ViewModel() {
             "lastName" to lastName,
             "dob" to dateOfBirth,
             "email" to email,
-            "mobileNumber" to mobileNumber,
-
-
+            "mobileNumber" to mobileNumber
         )
 
         Firebase.firestore.collection("users")
@@ -95,13 +102,8 @@ class AuthViewModel: ViewModel() {
             .set(userMap)
             .addOnSuccessListener { onSuccess(userId) }
             .addOnFailureListener { onFailure(it) }
-
-
     }
 
-
-
-    // Create Login Credentials
     fun createCredentials(
         userId: String,
         onSuccess: () -> Unit,
@@ -123,15 +125,12 @@ class AuthViewModel: ViewModel() {
             .addOnFailureListener { onFailure(it) }
     }
 
-    // Login User
     fun userLogin(
         onSuccess: (userId: String) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-
         val enteredUsername = username
         val enteredPassword = password
-
 
         db.collection("logins")
             .whereEqualTo("username", enteredUsername)
@@ -145,11 +144,8 @@ class AuthViewModel: ViewModel() {
                         val userId = document.getString("userId") ?: ""
                         onSuccess(userId)
                     } else {
-
-
                         onFailure(Exception("Invalid Username or Password"))
                     }
-
                 } else {
                     onFailure(Exception("Invalid Username or Password"))
                 }
@@ -159,7 +155,6 @@ class AuthViewModel: ViewModel() {
             }
     }
 
-    // Track User Login
     fun trackUserLog(userId: String) {
         val logID = UUID.randomUUID().toString()
         val logMap = mapOf(
@@ -172,6 +167,4 @@ class AuthViewModel: ViewModel() {
             .document(logID)
             .set(logMap)
     }
-
-
 }
